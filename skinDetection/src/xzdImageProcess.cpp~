@@ -72,7 +72,7 @@ void lineDetect(Mat binaryImg)
 {
 	Mat color_dst;
     cvtColor( binaryImg, color_dst, CV_GRAY2BGR );
-	vector<Vec4i> lines;
+	std::vector<Vec4i> lines;
 	HoughLinesP(binaryImg, lines, 20, CV_PI/10, 30, 10, 20);
 	std::cout << lines.size() << std:: endl;
 	for( size_t i = 0; i < lines.size(); i++ )
@@ -121,7 +121,7 @@ void cornerHarris_demo(Mat src_gray, int thresh)
   imshow( corners_window, dst_norm_scaled );
 }
 
-int randTwoPoints(vector<Point2i> points, int &index_point1, int &index_point2, double minPointsDistance = 10)
+int randTwoPoints(std::vector<Point2i> points, int &index_point1, int &index_point2, double minPointsDistance = 10)
 {
 	int pointsNum = points.size();
 	index_point1 = rand() % pointsNum;
@@ -155,8 +155,8 @@ void getLineNormFunc(T &point1, T &point2, Vec3d &_line)
 	_line /= lineM;
 }
 
-void lineInlier(vector<Point2i> &points, Vec3d &_line, vector<Point2i> &inliers, 
-				vector<Point2i> &outliers, double maxInlinerDis = 5)
+void lineInlier(std::vector<Point2i> &points, Vec3d &_line, std::vector<Point2i> &inliers, 
+				std::vector<Point2i> &outliers, double maxInlinerDis = 5)
 {
 	if(!inliers.empty())
 	{
@@ -187,8 +187,8 @@ void lineInlier(vector<Point2i> &points, Vec3d &_line, vector<Point2i> &inliers,
 	}
 }
 
-void lineDetectByRANSAC(vector<Point2i> &edgePoints, vector<Vec3d> &lines, double minLineLength, 
-						double maxInlinerDis, Mat &garyImage, vector<Point2d> &linesMidPoint)
+void lineDetectByRANSAC(std::vector<Point2i> &edgePoints, std::vector<Vec3d> &lines, double minLineLength, 
+						double maxInlinerDis, Mat &garyImage, std::vector<Point2d> &linesMidPoint)
 {
 	if(edgePoints.empty())
 	{
@@ -200,7 +200,7 @@ void lineDetectByRANSAC(vector<Point2i> &edgePoints, vector<Vec3d> &lines, doubl
 	int iter = 0, detectedLinesNum = 0;
 
 	srand(time(NULL));
-	vector<Point2i> points(edgePoints);
+	std::vector<Point2i> points(edgePoints);
 
 	Mat color_dst;
 	cvtColor(garyImage, color_dst, CV_GRAY2BGR );
@@ -220,7 +220,7 @@ void lineDetectByRANSAC(vector<Point2i> &edgePoints, vector<Vec3d> &lines, doubl
 		// line ax + by + c = 0
 		getLineNormFunc(points[index_point1], points[index_point2], _line);
 		Point2d mid_point = (points[index_point1] + points[index_point2]) * 0.5;
-		vector<Point2i> outliers, inliers;
+		std::vector<Point2i> outliers, inliers;
 		lineInlier(points, _line, inliers, outliers, maxInlinerDis / 2);
 		// if find a line
 		if(inliers.size() > minLineLength)
@@ -260,7 +260,7 @@ void lineDetectByRANSAC(vector<Point2i> &edgePoints, vector<Vec3d> &lines, doubl
 	}
 }
 
-void mergeParallelLines(vector<Vec3d> &lines, double angleThres, vector<Point2d> linesPoint)
+void mergeParallelLines(std::vector<Vec3d> &lines, double angleThres, std::vector<Point2d> linesPoint)
 {
 	if(lines.size() < 2)
 	{
@@ -271,7 +271,7 @@ void mergeParallelLines(vector<Vec3d> &lines, double angleThres, vector<Point2d>
 	{
 		fullSet[i] = i;
 	}
-	vector<std::vector<int> > paralleLines;
+	std::vector<std::std::vector<int> > paralleLines;
 	int *tmp = new int[lines.size() + 1];
 	while(fullSet[0] != -1)
 	{
@@ -311,8 +311,8 @@ void mergeParallelLines(vector<Vec3d> &lines, double angleThres, vector<Point2d>
 	}
 	delete [] tmp;
 	delete [] fullSet;
-	vector<Vec3d> newLines;
-	for(vector<vector<int> >::iterator iter = paralleLines.begin(); iter != paralleLines.end(); ++iter)
+	std::vector<Vec3d> newLines;
+	for(std::vector<std::vector<int> >::iterator iter = paralleLines.begin(); iter != paralleLines.end(); ++iter)
 	{
 		Vec3d tmpLine(0, 0, 0);
 		for(int index = 0; index != (*iter).size(); ++index)
@@ -374,7 +374,7 @@ bool calCrossPoint(Vec3d line1, Vec3d line2, Point2d &crossPoint)
 	return true;
 }
 
-void showPoints(vector<Point2d> &points, Mat grayImage)
+void showPoints(std::vector<Point2d> &points, Mat grayImage)
 {
 	Mat color_dst;
 	cvtColor(grayImage, color_dst, CV_GRAY2BGR );
