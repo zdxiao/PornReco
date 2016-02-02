@@ -36,10 +36,10 @@ void lineDetect(Mat binaryImg);
 // detect corner by harris method
 void cornerHarris_demo(Mat src_gray, int thresh);
 // detect line using RANSAC
-void lineDetectByRANSAC(vector<Point2i> &edgePoints, vector<Vec3d> &lines, double minLineLength,
-						double maxInlinerDis, Mat &garyImage, vector<Point2d> &linesMidPoint);
+void lineDetectByRANSAC(std::vector<Point2i> &edgePoints, std::vector<Vec3d> &lines, double minLineLength,
+						double maxInlinerDis, Mat &garyImage, std::vector<Point2d> &linesMidPoint);
 // merge parallel lines
-void mergeParallelLines(vector<Vec3d> &lines, double angleThres, vector<Point2d> linesPoint);
+void mergeParallelLines(std::vector<Vec3d> &lines, double angleThres, std::vector<Point2d> linesPoint);
 // judge if the lines are paralle lines
 bool isParallelClose(Vec3d line1, Vec3d line2, double angleThres, Point2d point1, Point2d point2, double max_distance = 20);
 // judge if the lines are paralle lines
@@ -47,8 +47,8 @@ bool isParallel(Vec3d line1, Vec3d line2, double angleThres = 15);
 // calculate cross point of two lines
 bool calCrossPoint(Vec3d line1, Vec3d line2, Point2d &crossPoint);
 // show given points in a gray image
-void showPoints(vector<Point2d> &Points, Mat grayImage);
-// calculate angle of two vectors
+void showPoints(std::vector<Point2d> &Points, Mat grayImage);
+// calculate angle of two std::vectors
 bool calAngle(Vec2d vec1, Vec2d vec2, double &angle);
 // act homography
 void warpHomo(Mat src, Mat &dst, Mat& H);
